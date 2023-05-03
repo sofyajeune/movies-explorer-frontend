@@ -1,0 +1,120 @@
+.techs {
+  padding: 100px 70px;
+  background-color: #F5F5F5;
+  color: #000;
+}
+
+.techs__title {
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  border-bottom: 1px solid #000;
+  margin: 0;
+  padding: 0 0 23px;
+  letter-spacing: -0.04em;
+}
+
+.techs__subtitle {
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 1.16;
+  letter-spacing: -0.04em;
+  text-align: center;
+  margin: 90px auto 0;
+  max-width: 460px;
+}
+
+.techs__info {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: -0.04em;
+  z-index: 1;
+  text-align: center;
+  margin: 26px auto 0;
+  max-width: 460px;
+}
+
+.techs__list {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(84px, 90px));
+  grid-template-rows: 60px;
+  gap: 10px;
+  margin: 100px 0 0;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.techs__step {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #e8e8e8;
+  border-radius: 10px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+@media screen and (max-width: 1000px) {
+  .techs {
+    padding: 90px 50px;
+  }
+
+  .techs__list {
+    grid-template-rows: 57px;
+    grid-auto-rows: 57px;
+    grid-template-columns: repeat(auto-fit, 84px);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .techs__subtitle {
+    margin: 80px auto 0;
+  }
+
+  .techs__text {
+    margin: 22px auto 0;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .techs__list {
+    grid-template-columns: repeat(4, 84px);
+    margin: 80px 0 0;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .techs {
+    padding: 70px 18px;
+    background-color: #FAFAFA;
+  }
+
+  .techs__subtitle {
+    margin: 60px auto 0;
+    font-size: 30px;
+    line-height: 1.2;
+  }
+
+  .techs__info {
+    font-size: 11px;
+    margin: 24px auto 0;
+  }
+
+  .techs__list {
+    grid-template-rows: 57px;
+    grid-auto-rows: 57px;
+    margin: 50px 0 0;
+    grid-template-columns: repeat(2, 84px);
+  }
+
+}

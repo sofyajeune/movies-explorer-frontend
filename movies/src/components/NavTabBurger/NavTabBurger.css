@@ -1,0 +1,131 @@
+.navtabburger {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .navtabburger {
+        display: none;
+    }
+
+}
+
+.navtabburger_active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FAFAFA;
+}
+
+.navtabburger__list {
+    display: flex;
+    padding: 0;
+    margin: 0 0 0 44px;
+    align-items: center;
+    flex-grow: 2;
+    justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+    .navtabburger__list {
+        flex-direction: column;
+        margin: 88px 0 0 0;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .navtabburger__list {
+        margin-top: 82px;
+    }
+}
+
+.navtabburger__item {
+    list-style: none;
+    margin: 0 16px 0 0;
+}
+
+@media screen and (max-width: 768px) {
+    .navtabburger__item {
+        margin: 31px 0 0 0;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .navtabburger__item {
+        margin-top: 27px;
+    }
+}
+
+.navtabburger__item:first-child {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .navtabburger__item:first-child {
+        display: block;
+        margin: 16px 0 0 0;
+    }
+}
+
+.navtabburger__item-link {
+    text-decoration: none;
+    color: black;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    padding-bottom: 4px;
+}
+
+.navtabburger__item-link:hover {
+    text-decoration: underline;
+}
+
+
+.navtabburger__account {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 32px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 0 17px 0 0;
+    background-color: rgb(244, 244, 244);
+    border: none;
+    color: #000;
+    border-radius: 15px;
+    transition: color .4s ease-in;
+}
+
+.navtabburger__account:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    .navtabburger__item-link {
+        font-weight: 500;
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .navtabburger__item-link {
+        padding-bottom: 7px;
+    }
+}
+
+.navtabburger__profile-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-left: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .navtabburger__profile-link {
+        margin: 150px auto 92px;
+    }
+}
