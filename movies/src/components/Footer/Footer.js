@@ -4,7 +4,7 @@ function Footer({page}) {
 
     return (
         page &&
-        <section className="footer">
+        <footer className="footer">
             <h3 className="footer__title">Учебный проект Яндекс.Практикум х BeatFilm.</h3>
             <div className="footer__container">
                 <p className="footer__copyright">© {new Date().getFullYear()}</p>
@@ -17,7 +17,7 @@ function Footer({page}) {
                     </li>
                 </ul>
             </div>
-        </section>
+        </footer>
     );
 }
 

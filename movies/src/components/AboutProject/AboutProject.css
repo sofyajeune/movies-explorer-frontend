@@ -122,6 +122,10 @@
     margin: 0 0 56px;
   }
 
+  .project__description:first-child {
+    margin-bottom: 56px;
+  }
+
   .project__item-title {
     margin: 0 0 16px;
     font-size: 18px;

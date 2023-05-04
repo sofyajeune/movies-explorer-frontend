@@ -15,8 +15,7 @@
         justify-content: center;
         visibility: hidden;
         opacity: 0;
-        transition: visibility .30s, opacity ease .30s;
-        z-index: 11;
+        transition: visibility .20s, opacity ease .20s;
     }
 
     .burger_active {
@@ -28,10 +27,11 @@
     }
 
     .burger__container {
-        background-color: #FAFAFA;;
-        transition: all 0.3s ease 0s;
+        background-color: #FAFAFA;
+        transition: all 0.2s ease 0s;
         position: fixed;
         width: 68%;
+        height: 100%;
         top: 0;
         right: 0;
         display: flex;
@@ -43,8 +43,7 @@
     .burger__button {
         background-color: transparent;
         border: none;
-        margin: 22px 22px 0 0;
-        padding: 0;
+        padding: 22px 22px 0 0;
         cursor: pointer;
     }
 }
@@ -55,6 +54,6 @@
     }
 
     .burger__button {
-        margin: 13px 14px 0 0;
+        padding: 13px 14px 0 0;
     }
 }

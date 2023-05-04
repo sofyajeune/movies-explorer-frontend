@@ -4,8 +4,8 @@ import "./NavTab.css"
 function NavTab() {
     return (
         <section className="navtab">
-            <Link to='/signup' className='menu__link'>Регистрация</Link>
-            <Link to='/signin' className='menu__link menu__link_type_signin'>Войти</Link>
+            <Link to='/signup' className='navtab__menulink'>Регистрация</Link>
+            <Link to='/signin' className='navtab__menulink navtab__menulink_type_signin'>Войти</Link>
         </section>
     );
 }
