@@ -7,7 +7,7 @@ import Layout from "../Layout/Layout"
 function Movies({ onOpenBurger }) {
 
     return (
-        <Layout className="header__white" isLoggedIn page onOpenBurger={onOpenBurger}>
+        <Layout className="header header_white" isLoggedIn page onOpenBurger={onOpenBurger}>
             <main className="movies">
                 <SearchForm />
                 <Preloader />

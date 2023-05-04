@@ -1,5 +1,4 @@
 .header {
-  background-color: #DDDEE3;
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -7,7 +6,11 @@
   position: relative;
 }
 
-.header__white {
+.header_main {
+  background-color: #DDDEE3;
+}
+
+.header_white {
   color: #DDDEE3;
   width: 100%;
   box-sizing: border-box;
@@ -35,19 +38,19 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .header__white {
+  .header_white {
     padding: 18px 40px;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .header__white {
+  .header_white {
     padding: 18px 30px;
   }
 }
 
 @media screen and (max-width: 560px) {
-  .header__white {
+  .header_white {
     padding: 18px 14px;
   }
 }

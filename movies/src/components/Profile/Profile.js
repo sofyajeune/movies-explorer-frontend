@@ -20,7 +20,7 @@ function Profile({ isLoggedIn, onOpenBurger }) {
     }
 
     return (
-        <Layout className="header__white" isLoggedIn page={false} onOpenBurger={onOpenBurger}>
+        <Layout className="header header_white" isLoggedIn page={false} onOpenBurger={onOpenBurger}>
             <section className='profile'>
                 <div className='profile__section'>
                     <div className='profile__container'>

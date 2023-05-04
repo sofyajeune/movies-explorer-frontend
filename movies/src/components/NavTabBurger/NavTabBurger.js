@@ -10,17 +10,17 @@ function NavTabBurger({ isOpen, onClose }) {
   return (
     <div className={className}>
       <ul className="navtabburger__list">
-        <li className="navtabburger__item text-hover" onClick={onClose}>
+        <li className="navtabburger__item" onClick={onClose}>
           <NavLink className={classNameLink} to="/">Главная</NavLink>
         </li>
-        <li className="navtabburger__item text-hover" onClick={onClose}>
+        <li className="navtabburger__item" onClick={onClose}>
           <NavLink className={classNameLink} to="/movies">Фильмы</NavLink>
         </li>
-        <li className="navtabburger__item text-hover" onClick={onClose}>
+        <li className="navtabburger__item" onClick={onClose}>
           <NavLink to="/saved-movies" className={classNameLink}>Сохраненные фильмы</NavLink>
         </li>
       </ul>
-      <NavLink to="/profile" className="navtabburger__profile-link text-hover">
+      <NavLink to="/profile" className="navtabburger__profile-link">
         <p className="navtabburger__account">Аккаунт</p>
       </NavLink>
     </div>

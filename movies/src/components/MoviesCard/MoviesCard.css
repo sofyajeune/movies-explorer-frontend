@@ -1,9 +1,9 @@
-.moviescard__elements {
+.moviescard {
   position: relative;
   transition: transform .2s ease-out;
 }
 
-.moviescard__elements:hover {
+.moviescard:hover {
   transform: scale(1.02);
 }
 

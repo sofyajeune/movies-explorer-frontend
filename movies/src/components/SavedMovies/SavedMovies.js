@@ -7,7 +7,7 @@ import Layout from '../Layout/Layout';
 function SavedMovies({ onOpenBurger }) {
 
   return (
-    <Layout className="header__white" title="Main" isLoggedIn page onOpenBurger={onOpenBurger}>
+    <Layout className="header header_white" title="Main" isLoggedIn page onOpenBurger={onOpenBurger}>
       <section className='savedmovies'>
         <SearchForm />
         <MoviesCardList className={'moviescard__delete'} />

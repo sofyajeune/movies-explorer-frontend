@@ -13,7 +13,7 @@ function Main({ isLoggedIn }) {
 
   return (
     <>
-      <Layout className="header" isLoggedIn={false} page>
+      <Layout className="header header_main" isLoggedIn={false} page>
         <main className='content'>
           <Promo />
           <AboutProject />

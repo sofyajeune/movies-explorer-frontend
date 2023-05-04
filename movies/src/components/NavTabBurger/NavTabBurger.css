@@ -109,11 +109,19 @@
         font-weight: 500;
         font-size: 18px;
     }
+
+    .navtabburger__account {
+        margin-top: 621px;
+    }
 }
 
 @media screen and (max-width: 400px) {
     .navtabburger__item-link {
         padding-bottom: 7px;
+    }
+
+    .navtabburger__account {
+        margin-top: 444px;
     }
 }
 
