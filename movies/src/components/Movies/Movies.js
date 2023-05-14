@@ -4,14 +4,18 @@ import SearchForm from "../SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader"
 import Layout from "../Layout/Layout"
 
-function Movies({ onOpenBurger }) {
+function Movies(props) {
+    const { onOpenBurger, isLoading } = props;
 
     return (
         <Layout className="header header_white" isLoggedIn page onOpenBurger={onOpenBurger}>
             <main className="movies">
-                <SearchForm />
-                <Preloader />
-                <MoviesCardList className={'moviescard__save'}/>
+                <SearchForm props={props} pageSavedMovie={false} />
+                {isLoading ? (
+                    <Preloader />
+                ) : (
+                    <MoviesCardList props={props} pageSavedMovie={false} />
+                )}
             </main>
         </Layout>
     );

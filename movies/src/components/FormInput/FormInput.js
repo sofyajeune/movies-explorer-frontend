@@ -1,6 +1,6 @@
 import './FormInput.css';
 import { Link } from 'react-router-dom';
-import Logo from "../Logo/Logo"
+import Logo from "../Logo/Logo";
 
 function FormInput({
   type,
@@ -8,14 +8,18 @@ function FormInput({
   greeting,
   buttonName,
   question,
-  linkName }) {
+  linkName,
+  handleSubmit,
+  handleChange,
+  errors
+}) {
 
   return (
     <section className='forminput'>
       <div className='forminput__zone'>
         <Logo />
         <h2 className='forminput__title'>{greeting}</h2>
-        <form className='forminput__form'>
+        <form className='forminput__form' onSubmit={handleSubmit}>
           {type === 'signup' && (
             <label className='forminput__label'>Имя
               <input
@@ -26,9 +30,12 @@ function FormInput({
                 minLength='2'
                 maxLength='30'
                 required
-                pattern='^[A-Za-zА-Яа-яЁё /s -]+$'
+                onChange={handleChange}
               />
-            </label>)}
+              <span className='forminput__total-error'>{errors.name}
+              </span>
+            </label>
+          )}
           <label className='forminput__label'>E-mail
             <input
               id='email'
@@ -38,8 +45,11 @@ function FormInput({
               minLength='2'
               maxLength='30'
               required
+              onChange={handleChange}
             />
           </label>
+          <span className='forminput__total-error'>{errors.email}
+          </span>
           <label className='forminput__label'>Пароль
             <input
               id='password'
@@ -49,8 +59,9 @@ function FormInput({
               minLength='4'
               maxLength='20'
               required
+              onChange={handleChange}
             />
-            <span className='forminput__total-error'>
+            <span className='forminput__total-error'>{errors.password}
             </span>
           </label>
 
