@@ -1,9 +1,9 @@
 import {
   useNavigate,
   Routes,
-  Route
+  Route,
 } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -13,11 +13,65 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import Burger from "../Burger/Burger";
+import { MoviesApi } from '../../utils/MoviesApi';
+import { register, login } from "../../utils/AuthApi";
+import { api } from "../../utils/MainApi";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import MessagePopup from "../MessagePopup/MessagePopup";
+
+// CurrentUserContext
 
 function App() {
   const [isOpenBurger, setisOpenBurger] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const navigate = useNavigate();
+
+  const { state, setSavedMovies, updateState } = useContext(CurrentUserContext);
+
+  // Стейт для фильмов
+  const [allMovies, setAllMovies] = useState([]);
+
+  // cтейт для отслеживания загрузки страницы
+  const [token] = useState(localStorage.getItem("jwt"));
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!token);
+
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const handleClosePopup = () => {
+    setIsPopupVisible(false); // Close the popup
+  };
+  //Авторизация
+  function handleLogin(email, password) {
+    login(email, password)
+      .then((res) => {
+        localStorage.setItem("jwt", res.token);
+        setIsLoggedIn(true);
+        navigate('/movies');
+      });
+  };
+
+  //Регистрация нового пользователя
+  function handleRegister(password, email, name) {
+    register(password, email, name)
+      .then(() => {
+        handleLogin(password, email);
+      }).catch((e) => {
+        console.error(e)
+        setIsPopupVisible(true)
+      });
+  };
+
+  function handleLogout() {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("currentUser");
+    updateState({
+      isAuthenticated: false,
+    });
+    setIsLoggedIn(false);
+    navigate('/');
+  }
 
   useEffect(() => {
     function handelEscape(evt) {
@@ -43,34 +97,97 @@ function App() {
     };
   }, []);
 
+
   function handleOpenBurger() {
-    setisOpenBurger(true)
+    setisOpenBurger(true);
   }
 
   function closeBurger() {
-    setisOpenBurger(false)
+    setisOpenBurger(false);
   }
 
-  function handleLoginClick() {
-    navigate("/movies", { replace: true })
+  async function getSavedMovies() {
+    return api.getSavedMovies().then((r) => {
+      setSavedMovies(r.data);
+    }).catch((e) => {
+      console.error(e)
+      setIsPopupVisible(true)
+    });
   }
+
+  // данные фильмов
+  useEffect(() => {
+    api.getUserInfo().then(d => {
+      updateState({
+        user: {
+          name: d.data.name,
+          email: d.data.email,
+        },
+        isAuthenticated: true,
+      });
+      setIsLoggedIn(true);
+    }).catch((e) => {
+      handleLogout();
+      console.error("Ошибка авторизации!");
+    });
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    if (isLoggedIn) {
+      Promise.all([
+        MoviesApi.getMovies(),
+        getSavedMovies(),
+      ])
+        .then(([movie]) => {
+          setAllMovies(movie);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setIsPopupVisible(true)
+          console.log(`Ошибка при получении данных: ${err}`);
+        });
+    }
+  }, [isLoggedIn]);
 
 
   return (
-
     <div className="app">
+      {isPopupVisible && (<MessagePopup onClose={handleClosePopup}
+        title={"Возникла ошибка"}
+        description={"Попробуйте повторить попытку позже"}
+      />)}
       <Burger isOpen={isOpenBurger} onClose={closeBurger} />
       <Routes>
         <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
-        <Route path="/movies" element={<Movies onOpenBurger={handleOpenBurger} />} />
-        <Route path="/saved-movies" element={<SavedMovies onOpenBurger={handleOpenBurger} />} />
-        <Route path="/notfound" element={<NotFound />} />
-        <Route path="/signup" element={<Register />} />
-        <Route path="/signin" element={<Login login={handleLoginClick} />} />
-        <Route path="/profile" element={<Profile onOpenBurger={handleOpenBurger} />} />
+        <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
+        <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
+        <Route path="/movies" element={
+          <ProtectedRoute isAuthenticated={isLoggedIn}>
+            <Movies onOpenBurger={handleOpenBurger}
+              allMovies={allMovies}
+              isLoading={isLoading}
+            />
+          </ProtectedRoute>
+        } />
+        <Route path="/saved-movies" element={
+          <ProtectedRoute isAuthenticated={isLoggedIn}>
+            <SavedMovies onOpenBurger={handleOpenBurger}
+              allMovies={allMovies}
+              isLoading={isLoading}
+            />
+          </ProtectedRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute isAuthenticated={isLoggedIn}>
+            <Profile onOpenBurger={handleOpenBurger} handleLogout={handleLogout} />
+          </ProtectedRoute>
+        } />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
-  )
+  );
 }
 
 export default App;

@@ -1,24 +1,83 @@
 import './MoviesCard.css';
-import filmImage from '../../images/filmImage.png'
+import {CurrentUserContext} from '../../contexts/CurrentUserContext';
+import React, {useEffect} from "react";
+import {useState, useContext} from "react";
+import {MoviesApi} from "../../utils/MoviesApi";
+import {api} from "../../utils/MainApi";
 
-function MoviesCard({ className, textButton }) {
+function MoviesCard({movie, tb_delete=false}) {
 
-  //card.nameRU
-  //'movie__save-btn'
-  const cardName = 'Киноальманах «100 лет дизайна»'
+  // currentUser
+
+  const [isLiked, setIsLiked] = useState(false);
+
+  function convertTime(duration) {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
+    return `${ hours }ч ${ minutes }м`;
+  }
+
+
+  // console.log(currentUser)
+
+  // Определяем, являемся ли мы владельцем текущей карточки
+  // const isOwn = movie.owner._id === currentUser._id;
+
+  // Определяем, есть ли у карточки поставленный нами лайк
+  // const isLiked = movie.likes.some(i => i._id === currentUser._id);
+
+  //Переменная для класса кнопки лайка
+  const cardLikeButtonClassName =
+    `moviescard__save ${ isLiked && 'moviescard__save_active' }`;
+
+  const {state, setSavedMovies} = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    setIsLiked(state.savedMovies.some(obj => obj.movieId === movie.id));
+  }, [state.savedMovies]);
+
+  let preventDoubleClick = false
+
+  //Обработчик клика по лайку
+  async function onCardLike(movie) {
+    if (!preventDoubleClick) {
+      preventDoubleClick = true
+      if (state.savedMovies.some(obj => obj.movieId === movie.id) || tb_delete) {
+        const movieId = movie._id || state.savedMovies.find(obj => obj.movieId === movie.id)._id;
+        // Удаляем фильм из контекста и делаем запрос
+        await api.deleteMovies(movieId);
+        setSavedMovies(state.savedMovies.filter(obj => obj.movieId !== movie.movieId && obj.movieId !== movie.id ));
+      } else {
+        // Добавляем фильм в контекст и делаем запрос
+        // const updatedFilms = [...state.savedMovies, movie];
+        const resp = await api.saveMovies(movie);
+
+        setSavedMovies([...state.savedMovies, resp.data]);
+        // console.log(resp)
+      }
+      // api.getSavedMovies().then((r) => {
+      //   setSavedMovies(r.body);
+      // });
+      preventDoubleClick = false
+    }
+  }
+
+  async function handleCardLike() {
+    await onCardLike(movie);
+  }
 
   return (
     <div className="moviescard">
       <article className="moviescard__article">
-        <a className="moviescard__trailer-link" href='https://ru.wikipedia.org/wiki/%D0%A2%D0%B5%D0%BE%D1%80%D0%B8%D1%8F_%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BA%D0%B8%D0%BD%D0%BE' target="_blank" rel="noreferrer">
-          <button className={className}></button>
-          <img className="moviescard__photo" src={filmImage} alt='постер' />
+        <a className="moviescard__trailer-link" href={ movie.trailerLink } target="_blank" rel="noreferrer">
+          <img className="moviescard__photo" src={ typeof movie.image == 'string' ? movie.image : `https://api.nomoreparties.co${ movie.image.url }` } alt="постер"/>
         </a>
       </article>
       <div className="moviescard__flex">
-        <h2 className="moviescard__text">{cardName}</h2>
-        <p className="moviescard__time">15ч 32м</p>
+        <h2 className="moviescard__text">{ movie.nameRU }</h2>
+        <button className={ tb_delete ? 'moviescard__delete' : cardLikeButtonClassName } onClick={ handleCardLike }/>
       </div>
+      <p className="moviescard__time">{ convertTime(movie.duration) }</p>
     </div>
   );
 }

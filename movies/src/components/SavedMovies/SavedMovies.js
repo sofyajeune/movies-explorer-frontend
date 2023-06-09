@@ -1,18 +1,21 @@
 import './SavedMovies.css';
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import Layout from '../Layout/Layout';
+import React from "react";
+import Movies from "../Movies/Movies";
+import {useContext} from "react";
+import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 
-
-function SavedMovies({ onOpenBurger }) {
-
+function SavedMovies({onOpenBurger, movies, isLoading}) {
+  const {state, setSavedMovies} = useContext(CurrentUserContext);
   return (
-    <Layout className="header header_white" title="Main" isLoggedIn page onOpenBurger={onOpenBurger}>
-      <section className='savedmovies'>
-        <SearchForm />
-        <MoviesCardList className={'moviescard__delete'} />
-      </section>
-    </Layout>
+    <Movies onOpenBurger={ onOpenBurger }
+            allMovies={ state.savedMovies }
+            isLoading={ isLoading }
+            tbDelete={true}
+            previewEnabled={true}
+      // searchFilter={ useSearchFilter }
+      // filterDuration={ toggleShortMovies }
+      // filterEnabled={ filterEnabled }
+    />
   );
 }
 

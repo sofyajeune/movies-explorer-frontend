@@ -1,4 +1,6 @@
 .app {
+  min-height: 100vh;
+  display: flex;
   background: #FAFAFA;
   min-width: 320px;
   margin: 0 auto;

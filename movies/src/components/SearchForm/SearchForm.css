@@ -62,7 +62,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 3px;
+    border-radius: 30px;
     text-decoration: none;
     border: none;
     color: #fff;
@@ -104,10 +104,18 @@
     height: 20px;
     width: 36px;
     margin: 0;
+    transition: all 0.1s ease-in-out;
+}
+
+
+.nothing_found {
+    text-align: center;
+    width: 100%;
 }
 
 .searchform__filter_active {
     background-color: #2BE080;
+    padding: 6px 6px 6px 22px;
 }
 
 .searchform__switch {

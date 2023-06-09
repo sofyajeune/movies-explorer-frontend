@@ -22,6 +22,8 @@ function NavTabBurger({ isOpen, onClose }) {
       </ul>
       <NavLink to="/profile" className="navtabburger__profile-link">
         <p className="navtabburger__account">Аккаунт</p>
+        <div className="navtabburger__img"></div>
+
       </NavLink>
     </div>
   );

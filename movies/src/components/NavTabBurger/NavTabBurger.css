@@ -24,7 +24,7 @@
     margin: 0 0 0 44px;
     align-items: center;
     flex-grow: 2;
-    justify-content: center;
+    justify-content: end;
 }
 
 @media screen and (max-width: 768px) {
@@ -78,7 +78,7 @@
 }
 
 .navtabburger__item-link:hover {
-    text-decoration: underline;
+    font-weight: 410;
 }
 
 
@@ -91,17 +91,13 @@
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
-    margin: 0 17px 0 0;
-    background-color: rgb(244, 244, 244);
     border: none;
     color: #000;
-    border-radius: 15px;
     transition: color .4s ease-in;
 }
 
 .navtabburger__account:hover {
-    background-color: #000;
-    color: #fff;
+    color: #3456F3;
 }
 
 @media screen and (max-width: 768px) {
@@ -136,4 +132,25 @@
     .navtabburger__profile-link {
         margin: 150px auto 92px;
     }
+}
+
+.navtabburger__img {
+    width: 26px;
+    height: 30px;
+    background-color: transparent;
+    background-image: url(../../images/account-img.svg);
+    cursor: pointer;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 0;
+    background-color: rgba(244, 244, 244, 1);
+    padding: 8px;
+    border-radius: 8px;
+    transition: color .4s ease-in;
+}
+
+.navtabburger__img:hover {
+    background-color: #3456F3;
+    opacity: 0.8;
+    transition: color .4s ease-in;
 }

@@ -5,6 +5,7 @@
   background-color: #F8F8F8;
   ;
   color: #000;
+  justify-self: end !important;
 }
 
 .footer__title {
