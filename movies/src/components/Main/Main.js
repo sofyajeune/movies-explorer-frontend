@@ -9,11 +9,11 @@ import Portfolio from '../Portfolio/Portfolio';
 
 
 
-function Main({ isLoggedIn }) {
+function Main({ isLoggedIn, onOpenBurger }) {
 
   return (
     <>
-      <Layout className="header header_main" isLoggedIn={false} page>
+      <Layout className="header header_main" onOpenBurger={onOpenBurger} isLoggedIn={isLoggedIn} page>
         <main className='content'>
           <Promo />
           <AboutProject />
