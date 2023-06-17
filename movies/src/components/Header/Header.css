@@ -2,8 +2,10 @@
   width: 100%;
   box-sizing: border-box;
   display: flex;
+  justify-content: space-between;
   padding: 18px 70px;
   position: relative;
+  align-items: center;
 }
 
 .header_main {
@@ -16,7 +18,6 @@
   box-sizing: border-box;
   display: flex;
   padding: 18px 70px;
-  justify-content: space-between;
 }
 
 @media screen and (max-width: 1024px) {

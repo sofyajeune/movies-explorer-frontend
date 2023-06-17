@@ -8,22 +8,41 @@ import {useState} from "react";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 
-function Movies({onOpenBurger, allMovies, isLoading, tbDelete = false, previewEnabled = false}) {
+function Movies({
+                  onOpenBurger,
+                  allMovies,
+                  isLoading,
+                  resetCondition,
+                  tbDelete = false,
+                  previewEnabled = false,
+                  statefulFilters = true,
+                }) {
   // const shortMovies = false;
 
   // console.log(allMovies)
-  const {state, updateState} = useContext(CurrentUserContext);
+  const {state, updateState, setSearchResult} = useContext(CurrentUserContext);
 
   const [movies, setMovies] = useState([]);
   const [preview, setPreview] = useState(previewEnabled);
 
-  const [filterEnabled, setFilterEnabled] = useState(state.shortMoviesFilter);
-  const [searchFilter, setSearchFilter] = useState(state.searchFilter);
-  //
+  const [filterEnabled, setFilterEnabled] = useState(statefulFilters ? state.shortMoviesFilter : null);
+  const [searchFilter, setSearchFilter] = useState(statefulFilters ? state.searchFilter : null);
+
   useEffect(() => {
-    setFilterEnabled(state.shortMoviesFilter);
-    setSearchFilter(state.searchFilter);
-  }, [state.shortMoviesFilter, state.searchFilter]);
+    if (resetCondition) {
+      setMovies([]);
+      setPreview(false);
+      setFilterEnabled(false);
+      setSearchFilter(null);
+    }
+  }, [resetCondition]);
+
+  useEffect(() => {
+    if (statefulFilters) {
+      setFilterEnabled(state.shortMoviesFilter);
+      setSearchFilter(state.searchFilter);
+    }
+  }, [state]);
 
 
   const {width} = useWindowDimensions();
@@ -50,14 +69,14 @@ function Movies({onOpenBurger, allMovies, isLoading, tbDelete = false, previewEn
   // console.log(width, rowSize)
 
 
-  const [showMovies, setShowMovies] = useState([]);
+  const [showMovies, setShowMovies] = useState(statefulFilters ? state.searchResult || [] : []);
   const [displayMoreButton, setDisplayMoreButton] = useState(true);
 
   const [displayableMovies, setDisplayableMovies] = useState(defaultDisplayableMovies);
 
 
   function filterMovieShort(movies, isShort) {
-    console.log(movies)
+    // console.log(movies)
     if (movies.length > 0) {
       return isShort
         ? movies.filter(card => card.duration <= 40)
@@ -70,22 +89,26 @@ function Movies({onOpenBurger, allMovies, isLoading, tbDelete = false, previewEn
     e.preventDefault();
     setPreview(true);
     updateState({searchFilter: null});
+
     setSearchFilter(null);
     setFilterEnabled(false);
+    setSearchResult([]);
   }
 
   function toggleShortMovies() {
-    updateState({shortMoviesFilter: !filterEnabled});
+    if (statefulFilters) {
+      updateState({shortMoviesFilter: !filterEnabled});
+    }
     setFilterEnabled(!filterEnabled);
     filterMovieShort(allMovies, filterEnabled);
   }
 
   function applySearchFilter(event) {
-    // console.log("apply")
-    event.preventDefault();
     const search = event.target[0].value;
-    updateState({searchFilter: search});
-
+    if (statefulFilters) {
+      updateState({searchFilter: search});
+    }
+    event.preventDefault();
     setSearchFilter(search);
   }
 
@@ -125,13 +148,11 @@ function Movies({onOpenBurger, allMovies, isLoading, tbDelete = false, previewEn
   }
 
   useEffect(() => {
-    console.log("1")
     setStep(getStepSize(width));
     setDisplayableMovies(getFirstBatchSize(width));
   }, []);
 
   useEffect(() => {
-        console.log("2")
 
     if (searchFilter) {
       setPreview(true);
@@ -139,27 +160,27 @@ function Movies({onOpenBurger, allMovies, isLoading, tbDelete = false, previewEn
   }, [searchFilter]);
 
   useEffect(() => {
-        console.log("3")
 
     setStep(getStepSize(width));
     setDisplayableMovies(getFirstBatchSize(width));
   }, [width]);
 
   useEffect(() => {
-    console.log("4")
     resetPaginations();
     const mwf = getMoviesWithFilters();
     // setTimeout(() => {}, 30);
+    if (statefulFilters) {
+      setSearchResult(mwf);
+    }
+
     setMovies(mwf);
   }, [filterEnabled, searchFilter, allMovies]);
 
   useEffect(() => {
-    console.log("5")
     updateDisplayableMovies();
   }, [movies, displayableMovies]);
 
-  useEffect(() =>     {
-    console.log("6")
+  useEffect(() => {
     setDisplayMoreButton(showMovies.length < movies.length);
   }, [showMovies]);
 
@@ -172,7 +193,7 @@ function Movies({onOpenBurger, allMovies, isLoading, tbDelete = false, previewEn
         <SearchForm filterDuration={ toggleShortMovies } filterEnabled={ filterEnabled }
                     searchFilter={ searchFilter } applySearchFilter={ applySearchFilter }/>
 
-            { isLoading ? <Preloader/> : null }
+        { isLoading ? <Preloader/> : null }
         < MoviesCardList tbDelete={ tbDelete }
                          movies={ showMovies }
                          isLoading={ isLoading }

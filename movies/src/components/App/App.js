@@ -3,7 +3,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -13,10 +13,10 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import Burger from "../Burger/Burger";
-import { MoviesApi } from '../../utils/MoviesApi';
-import { register, login } from "../../utils/AuthApi";
-import { api } from "../../utils/MainApi";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import {MoviesApi} from '../../utils/MoviesApi';
+import {register, login} from "../../utils/AuthApi";
+import {api} from "../../utils/MainApi";
+import {CurrentUserContext, defaultState} from "../../contexts/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import MessagePopup from "../MessagePopup/MessagePopup";
 
@@ -26,22 +26,38 @@ function App() {
   const [isOpenBurger, setisOpenBurger] = useState(false);
   const navigate = useNavigate();
 
-  const { state, setSavedMovies, updateState } = useContext(CurrentUserContext);
+  const {state, setSavedMovies, updateState, removeCurrentUser} = useContext(CurrentUserContext);
 
   // Стейт для фильмов
   const [allMovies, setAllMovies] = useState([]);
 
   // cтейт для отслеживания загрузки страницы
-  const [token] = useState(localStorage.getItem("jwt"));
+  const [token, setToken] = useState(localStorage.getItem("jwt"));
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(!!token);
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
+  const [resetCondition, setResetCondition] = useState(false);
+
+  const handleReset = () => {
+    setResetCondition(true);
+  };
+
+  const resetState = () => {
+    setisOpenBurger(false);
+    setAllMovies([]);
+    setToken(null);
+    setIsLoading(false);
+    setIsPopupVisible(false);
+    handleReset()
+  };
+
   const handleClosePopup = () => {
     setIsPopupVisible(false); // Close the popup
   };
+
   //Авторизация
   function handleLogin(email, password) {
     login(email, password)
@@ -58,14 +74,17 @@ function App() {
       .then(() => {
         handleLogin(password, email);
       }).catch((e) => {
-        console.error(e)
-        setIsPopupVisible(true)
-      });
+      console.error(e);
+      setIsPopupVisible(true);
+    });
   };
 
   function handleLogout() {
+    resetState();
+    updateState(defaultState)
+    removeCurrentUser()
+
     localStorage.removeItem("jwt");
-    localStorage.removeItem("currentUser");
     updateState({
       isAuthenticated: false,
     });
@@ -110,8 +129,8 @@ function App() {
     return api.getSavedMovies().then((r) => {
       setSavedMovies(r.data);
     }).catch((e) => {
-      console.error(e)
-      setIsPopupVisible(true)
+      console.error(e);
+      setIsPopupVisible(true);
     });
   }
 
@@ -145,8 +164,8 @@ function App() {
           setIsLoading(false);
         })
         .catch((err) => {
-          setIsPopupVisible(true)
-          console.log(`Ошибка при получении данных: ${err}`);
+          setIsPopupVisible(true);
+          console.log(`Ошибка при получении данных: ${ err }`);
         });
     }
   }, [isLoggedIn]);
@@ -154,37 +173,39 @@ function App() {
 
   return (
     <div className="app">
-      {isPopupVisible && (<MessagePopup onClose={handleClosePopup}
-        title={"Возникла ошибка"}
-        description={"Попробуйте повторить попытку позже"}
-      />)}
-      <Burger isOpen={isOpenBurger} onClose={closeBurger} />
+      { isPopupVisible && (<MessagePopup onClose={ handleClosePopup }
+                                         title={ "Возникла ошибка" }
+                                         description={ "Попробуйте повторить попытку позже" }
+      />) }
+      <Burger isOpen={ isOpenBurger } onClose={ closeBurger }/>
       <Routes>
-        <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
-        <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
-        <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
+        <Route path="/" element={ <Main isLoggedIn={ isLoggedIn } onOpenBurger={ handleOpenBurger }/> }/>
+        <Route path="/signup" element={ <Register handleRegister={ handleRegister }/> }/>
+        <Route path="/signin" element={ <Login handleLogin={ handleLogin }/> }/>
         <Route path="/movies" element={
-          <ProtectedRoute isAuthenticated={isLoggedIn}>
-            <Movies onOpenBurger={handleOpenBurger}
-              allMovies={allMovies}
-              isLoading={isLoading}
+          <ProtectedRoute isAuthenticated={ isLoggedIn }>
+            <Movies onOpenBurger={ handleOpenBurger }
+                    allMovies={ allMovies }
+                    isLoading={ isLoading }
+                    resetCondition={ resetCondition }
             />
           </ProtectedRoute>
-        } />
+        }/>
         <Route path="/saved-movies" element={
-          <ProtectedRoute isAuthenticated={isLoggedIn}>
-            <SavedMovies onOpenBurger={handleOpenBurger}
-              allMovies={allMovies}
-              isLoading={isLoading}
+          <ProtectedRoute isAuthenticated={ isLoggedIn }>
+            <SavedMovies onOpenBurger={ handleOpenBurger }
+                         allMovies={ allMovies }
+                         isLoading={ isLoading }
+                         resetCondition={ resetCondition }
             />
           </ProtectedRoute>
-        } />
+        }/>
         <Route path="/profile" element={
-          <ProtectedRoute isAuthenticated={isLoggedIn}>
-            <Profile onOpenBurger={handleOpenBurger} handleLogout={handleLogout} />
+          <ProtectedRoute isAuthenticated={ isLoggedIn }>
+            <Profile onOpenBurger={ handleOpenBurger } handleLogout={ handleLogout }/>
           </ProtectedRoute>
-        } />
-        <Route path="*" element={<NotFound />} />
+        }/>
+        <Route path="*" element={ <NotFound/> }/>
       </Routes>
     </div>
   );

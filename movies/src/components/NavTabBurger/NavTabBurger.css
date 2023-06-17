@@ -1,6 +1,7 @@
 .navtabburger {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    height: 80%;
     width: 100%;
 }
 
@@ -21,10 +22,15 @@
 .navtabburger__list {
     display: flex;
     padding: 0;
-    margin: 0 0 0 44px;
+    margin: 0 0 0 55vw;
     align-items: center;
-    flex-grow: 2;
     justify-content: end;
+}
+
+@media screen and (max-width: 952px) {
+    .navtabburger__list {
+        margin: 0 0 0 45vw;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -36,7 +42,7 @@
 
 @media screen and (max-width: 400px) {
     .navtabburger__list {
-        margin-top: 82px;
+        /*margin-top: 82px;*/
     }
 }
 
@@ -107,7 +113,7 @@
     }
 
     .navtabburger__account {
-        margin-top: 621px;
+        /*margin-top: 621px;*/
     }
 }
 
@@ -117,7 +123,7 @@
     }
 
     .navtabburger__account {
-        margin-top: 444px;
+        /*margin-top: 444px;*/
     }
 }
 
@@ -125,12 +131,14 @@
     display: flex;
     align-items: center;
     text-decoration: none;
-    margin-left: auto;
+    /*margin-left: auto;*/
 }
 
 @media screen and (max-width: 768px) {
     .navtabburger__profile-link {
-        margin: 150px auto 92px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 

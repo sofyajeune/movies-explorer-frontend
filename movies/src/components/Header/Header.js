@@ -5,7 +5,6 @@ import Navigation from '../Navigation/Navigation';
 
 
 function Header({ onOpenBurger, isLoggedIn, className }) {
-
   return (
     <header className={className}>
       <Logo />
