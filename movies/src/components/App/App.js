@@ -17,7 +17,10 @@ import {MoviesApi} from '../../utils/MoviesApi';
 import {register, login} from "../../utils/AuthApi";
 import {api} from "../../utils/MainApi";
 import {CurrentUserContext, defaultState} from "../../contexts/CurrentUserContext";
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import {
+  ProtectedRoute,
+  UnauthorizedOnlyRoute,
+} from "../ProtectedRoute/ProtectedRoute";
 import MessagePopup from "../MessagePopup/MessagePopup";
 
 // CurrentUserContext
@@ -51,7 +54,7 @@ function App() {
     setToken(null);
     setIsLoading(false);
     setIsPopupVisible(false);
-    handleReset()
+    handleReset();
   };
 
   const handleClosePopup = () => {
@@ -81,8 +84,8 @@ function App() {
 
   function handleLogout() {
     resetState();
-    updateState(defaultState)
-    removeCurrentUser()
+    updateState(defaultState);
+    removeCurrentUser();
 
     localStorage.removeItem("jwt");
     updateState({
@@ -180,8 +183,16 @@ function App() {
       <Burger isOpen={ isOpenBurger } onClose={ closeBurger }/>
       <Routes>
         <Route path="/" element={ <Main isLoggedIn={ isLoggedIn } onOpenBurger={ handleOpenBurger }/> }/>
-        <Route path="/signup" element={ <Register handleRegister={ handleRegister }/> }/>
-        <Route path="/signin" element={ <Login handleLogin={ handleLogin }/> }/>
+        <Route path="/signup" element={
+          <ProtectedRoute isAuthenticated={ !isLoggedIn }>
+            <Register handleRegister={ handleRegister }/>
+          </ProtectedRoute>
+        }/>
+        <Route path="/signin" element={
+          <ProtectedRoute isAuthenticated={ !isLoggedIn }>
+            <Login handleLogin={ handleLogin }/>
+          </ProtectedRoute>
+        }/>
         <Route path="/movies" element={
           <ProtectedRoute isAuthenticated={ isLoggedIn }>
             <Movies onOpenBurger={ handleOpenBurger }

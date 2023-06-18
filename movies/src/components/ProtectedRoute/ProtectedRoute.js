@@ -13,4 +13,14 @@ export function ProtectedRoute({ isAuthenticated, children }) {
   return isAuthenticated ? children : null;
 }
 
-export default ProtectedRoute;
+export function UnauthorizedOnlyRoute({ isAuthenticated, children }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
+  return isAuthenticated ? children : null;
+}

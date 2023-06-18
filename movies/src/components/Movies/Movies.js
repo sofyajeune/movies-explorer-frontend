@@ -1,26 +1,26 @@
 import "./Movies.css";
-import React, {useEffect, useContext} from 'react';
+import React, { useEffect, useContext } from 'react';
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
 import Layout from "../Layout/Layout";
-import {useState} from "react";
-import {CurrentUserContext} from "../../contexts/CurrentUserContext";
+import { useState } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 function Movies({
-                  onOpenBurger,
-                  allMovies,
-                  isLoading,
-                  resetCondition,
-                  tbDelete = false,
-                  previewEnabled = false,
-                  statefulFilters = true,
-                }) {
+  onOpenBurger,
+  allMovies,
+  isLoading,
+  resetCondition,
+  tbDelete = false,
+  previewEnabled = false,
+  statefulFilters = true,
+}) {
   // const shortMovies = false;
 
   // console.log(allMovies)
-  const {state, updateState, setSearchResult} = useContext(CurrentUserContext);
+  const { state, updateState, setSearchResult } = useContext(CurrentUserContext);
 
   const [movies, setMovies] = useState([]);
   const [preview, setPreview] = useState(previewEnabled);
@@ -45,7 +45,7 @@ function Movies({
   }, [state]);
 
 
-  const {width} = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   // const defaultDisplayableMovies = 12;
   // const defaultStep = 3;
@@ -69,6 +69,8 @@ function Movies({
   // console.log(width, rowSize)
 
 
+
+
   const [showMovies, setShowMovies] = useState(statefulFilters ? state.searchResult || [] : []);
   const [displayMoreButton, setDisplayMoreButton] = useState(true);
 
@@ -88,7 +90,7 @@ function Movies({
   function resetFilters(e) {
     e.preventDefault();
     setPreview(true);
-    updateState({searchFilter: null});
+    updateState({ searchFilter: null });
 
     setSearchFilter(null);
     setFilterEnabled(false);
@@ -97,7 +99,7 @@ function Movies({
 
   function toggleShortMovies() {
     if (statefulFilters) {
-      updateState({shortMoviesFilter: !filterEnabled});
+      updateState({ shortMoviesFilter: !filterEnabled });
     }
     setFilterEnabled(!filterEnabled);
     filterMovieShort(allMovies, filterEnabled);
@@ -106,7 +108,7 @@ function Movies({
   function applySearchFilter(event) {
     const search = event.target[0].value;
     if (statefulFilters) {
-      updateState({searchFilter: search});
+      updateState({ searchFilter: search });
     }
     event.preventDefault();
     setSearchFilter(search);
@@ -114,9 +116,9 @@ function Movies({
 
   function filterSearchMovies(movies, search) {
     return search && search.length > 0 ? movies.filter(card =>
-        card.nameRU.toLowerCase().includes(search.toLowerCase())
-        || card.nameEN.toLowerCase().includes(search.toLowerCase())
-        || card.description.toLowerCase().includes(search.toLowerCase()))
+      card.nameRU.toLowerCase().includes(search.toLowerCase())
+      || card.nameEN.toLowerCase().includes(search.toLowerCase())
+      || card.description.toLowerCase().includes(search.toLowerCase()))
       : movies;
   }
 
@@ -188,19 +190,19 @@ function Movies({
   // console.log(showMovies)
 
   return (
-    <Layout className="header header_white" isLoggedIn page onOpenBurger={ onOpenBurger }>
+    <Layout className="header header_white" isLoggedIn page onOpenBurger={onOpenBurger}>
       <main className="movies">
-        <SearchForm filterDuration={ toggleShortMovies } filterEnabled={ filterEnabled }
-                    searchFilter={ searchFilter } applySearchFilter={ applySearchFilter }/>
+        <SearchForm filterDuration={toggleShortMovies} filterEnabled={filterEnabled}
+          searchFilter={searchFilter} applySearchFilter={applySearchFilter} />
 
-        { isLoading ? <Preloader/> : null }
-        < MoviesCardList tbDelete={ tbDelete }
-                         movies={ showMovies }
-                         isLoading={ isLoading }
-                         displayMoreButton={ displayMoreButton }
-                         addStep={ addStep }
-                         resetFilters={ resetFilters }
-                         previewEnabled={ preview }
+        {isLoading ? <Preloader /> : null}
+        < MoviesCardList tbDelete={tbDelete}
+          movies={showMovies}
+          isLoading={isLoading}
+          displayMoreButton={displayMoreButton}
+          addStep={addStep}
+          resetFilters={resetFilters}
+          previewEnabled={preview}
         />
       </main>
     </Layout>

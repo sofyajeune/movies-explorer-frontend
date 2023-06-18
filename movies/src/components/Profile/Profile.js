@@ -97,6 +97,7 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSave(false);
+    setModify(false);//block
     api.setUserInfo(formValue).then((r) => {
       console.log(r);
       setModify(false);
