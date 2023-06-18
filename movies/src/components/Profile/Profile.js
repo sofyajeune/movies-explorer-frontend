@@ -31,6 +31,36 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
   const [modifyEnabled, setModify] = useState(false);
   const [saveEnabled, setSave] = useState(false);
 
+  const errorMessage = "Возникла ошибка";
+  const errorDescription = "Попробуйте повторить попытку позже";
+
+  const successMessage = "Отлично!";
+  const successDescription = "Ваши данные успешно обновлены";
+
+  const [popUpTitle, setPopUpTitle] = useState(errorMessage);
+  const [popUpDescription, setPopUpDescription] = useState(errorDescription);
+
+  function setPopUpSuccess() {
+    setPopUpTitle(successMessage);
+    setPopUpDescription(successDescription);
+  }
+
+
+  function setPopUpFailure() {
+    setPopUpTitle(errorMessage);
+    setPopUpDescription(errorDescription);
+  }
+
+  function successPopUp() {
+    setPopUpSuccess();
+    setIsPopupVisible(true);
+  }
+
+  function failurePopUp() {
+    setPopUpFailure();
+    setIsPopupVisible(true);
+  }
+
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const checkEmail = (email) => {
@@ -69,7 +99,7 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
   }
 
   function testChange(username, email) {
-    console.log(username, initialState['name'])
+    console.log(username, initialState['name']);
     return !(initialState['name'] === username &&
       initialState['email'] === email);
   }
@@ -88,9 +118,6 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
     });
 
     setIsValid(e.target.closest('form').checkValidity());
-    let emailTest = true;
-    let changeTest = true;
-
   };
 
 
@@ -99,16 +126,21 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
     setSave(false);
     setModify(false);//block
     api.setUserInfo(formValue).then((r) => {
-      console.log(r);
       setModify(false);
       setInitialState({
         name: formValue.name,
         email: formValue.email,
-      })
-      console.log(initialState)
+      });
+      updateState({
+        user: {
+          name: formValue.name,
+          email: formValue.email
+        },
+      });
+      successPopUp();
     }).catch((e) => {
       console.error(e);
-      setIsPopupVisible(true);
+      failurePopUp();
     });
   };
 
@@ -128,7 +160,7 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
       });
     }).catch((e) => {
       console.error(e);
-      setIsPopupVisible(true);
+      failurePopUp();
     });
   }
 
@@ -138,24 +170,17 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
       setLoading(false);
     }).catch((e) => {
       console.error(e);
-      setIsPopupVisible(true);
+      failurePopUp();
     });
   }, []);
 
   useEffect(() => {
     if (testEmail(formValue.email) && testChange(formValue.name, formValue.email)) {
-      setSave(true)
+      setSave(true);
     } else {
-      setSave(false)
+      setSave(false);
     }
   }, [formValue]);
-
-  const [isInputEdit, setIsInputEdit] = useState(true);
-
-  // function handleEditClick(evt) {
-  //   evt.preventDefault();
-  //   setIsInputEdit(!isInputEdit);
-  // }
 
   const navigate = useNavigate();
 
@@ -166,8 +191,8 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
   return (
     <Layout className="header header_white" isLoggedIn page={ false } onOpenBurger={ onOpenBurger }>
       { isPopupVisible && (<MessagePopup onClose={ handleClosePopup }
-                                         title={ "Возникла ошибка" }
-                                         description={ "Попробуйте повторить попытку позже" }
+                                         title={ popUpTitle }
+                                         description={ popUpDescription }
       />) }
       <section className="profile">
         <div className="profile__section">

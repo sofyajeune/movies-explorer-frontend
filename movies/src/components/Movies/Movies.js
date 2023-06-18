@@ -29,9 +29,9 @@ function Movies({
   const [searchFilter, setSearchFilter] = useState(statefulFilters ? state.searchFilter : null);
 
   useEffect(() => {
-    if (resetCondition) {
+    if (!!resetCondition) {
       setMovies([]);
-      setPreview(false);
+      setPreview(previewEnabled);
       setFilterEnabled(false);
       setSearchFilter(null);
     }
@@ -67,10 +67,6 @@ function Movies({
   // }
 
   // console.log(width, rowSize)
-
-
-
-
   const [showMovies, setShowMovies] = useState(statefulFilters ? state.searchResult || [] : []);
   const [displayMoreButton, setDisplayMoreButton] = useState(true);
 
