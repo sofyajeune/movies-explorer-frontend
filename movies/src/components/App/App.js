@@ -44,6 +44,33 @@ function App() {
 
   const [resetCondition, setResetCondition] = useState(false);
 
+  const errorMessage = "Возникла ошибка";
+  const errorDescription = "Попробуйте повторить попытку позже";
+
+  const successMessage = "Отлично!";
+  const successDescription = "Ваши данные успешно обновлены";
+
+  const loginFailureMessage = "Не удалось авторизоваться!";
+  const loginFailureDescription = "Проверьте email и пароль";
+
+  const [popUpTitle, setPopUpTitle] = useState(errorMessage);
+  const [popUpDescription, setPopUpDescription] = useState(errorDescription);
+
+  function setPopUpSuccess() {
+    setPopUpTitle(successMessage);
+    setPopUpDescription(successDescription);
+  }
+
+  function setPopUpLogin() {
+    setPopUpTitle(loginFailureMessage);
+    setPopUpDescription(loginFailureDescription);
+  }
+
+  function setPopUpFailure() {
+    setPopUpTitle(errorMessage);
+    setPopUpDescription(errorDescription);
+  }
+
   const handleReset = () => {
     setResetCondition(true);
   };
@@ -52,12 +79,14 @@ function App() {
     setisOpenBurger(false);
     setAllMovies([]);
     setToken(null);
+    setPopUpFailure();
     setIsLoading(false);
     setIsPopupVisible(false);
     handleReset();
   };
 
   const handleClosePopup = () => {
+    setPopUpFailure();
     setIsPopupVisible(false); // Close the popup
   };
 
@@ -68,7 +97,11 @@ function App() {
         localStorage.setItem("jwt", res.token);
         setIsLoggedIn(true);
         navigate('/movies');
-      });
+      }).catch((e) => {
+      console.error(e);
+      setPopUpLogin();
+      setIsPopupVisible(true);
+    });
   };
 
   //Регистрация нового пользователя
@@ -78,6 +111,7 @@ function App() {
         handleLogin(password, email);
       }).catch((e) => {
       console.error(e);
+      setPopUpFailure();
       setIsPopupVisible(true);
     });
   };
@@ -133,23 +167,36 @@ function App() {
       setSavedMovies(r.data);
     }).catch((e) => {
       console.error(e);
+      setPopUpFailure();
       setIsPopupVisible(true);
     });
   }
 
-  // данные фильмов
+  // данные пользователя
   useEffect(() => {
     api.getUserInfo().then(d => {
-      updateState({
-        user: {
-          name: d.data.name,
-          email: d.data.email,
-        },
-        isAuthenticated: true,
-      });
-      setIsLoggedIn(true);
+      if (d.data) {
+        if (d.data.name && d.data.email) {
+          updateState({
+            user: {
+              name: d.data.name,
+              email: d.data.email,
+            },
+            isAuthenticated: true,
+          });
+          setIsLoggedIn(true);
+          return
+        }
+      }
+      setIsLoggedIn(false);
     }).catch((e) => {
-      handleLogout();
+      console.log(e)
+      if (e === "Ошибка: 401") {
+        handleLogout();
+      }
+      setPopUpFailure();
+      setIsPopupVisible(true);
+      setIsLoggedIn(false);
       console.error("Ошибка авторизации!");
     });
   }, []);
@@ -177,8 +224,8 @@ function App() {
   return (
     <div className="app">
       { isPopupVisible && (<MessagePopup onClose={ handleClosePopup }
-                                         title={ "Возникла ошибка" }
-                                         description={ "Попробуйте повторить попытку позже" }
+                                         title={ popUpTitle }
+                                         description={ popUpDescription }
       />) }
       <Burger isOpen={ isOpenBurger } onClose={ closeBurger }/>
       <Routes>

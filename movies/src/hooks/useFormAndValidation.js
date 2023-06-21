@@ -1,27 +1,59 @@
-import { useState } from "react";
+import {useState, useEffect} from "react";
+
+export const checkEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
 
 function useFormAndValidation() {
-    const [errors, setErrors] = useState({});
-    const [formValue, setFormValue] = useState("");
-    const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [formValue, setFormValue] = useState({});
+  const [isValid, setIsValid] = useState(false);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
 
-        setFormValue({
-            ...formValue,
-            [name]: value,
-        });
+    setErrors({
+      ...errors,
+      [name]: e.target.validationMessage,
+    });
 
-        setErrors({
-            ...errors,
-            [name]: e.target.validationMessage,
-        });
+    setIsValid(e.target.closest('form').checkValidity());
+  };
 
-        setIsValid(e.target.closest('form').checkValidity());
-    };
+  function testEmail(email) {
+    if (!checkEmail(email)) {
+      setErrors({
+        ...errors,
+        email: "Неправильная почта!",
+      });
+      return false;
+    } else {
+      setErrors({
+        ...errors,
+        email: null,
+      });
+      return true;
+    }
+  }
 
-    return { handleChange, errors, formValue, setFormValue, setErrors, isValid, setIsValid }
+  useEffect(() => {
+    if (formValue.email && testEmail(formValue.email)) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [formValue]);
+
+  useEffect(() => {
+    setErrors({})
+  }, []);
+
+  return {handleChange, errors, formValue, setFormValue, setErrors, isValid, setIsValid};
 }
 
 export default useFormAndValidation;
@@ -40,7 +72,6 @@ export default useFormAndValidation;
 //     setErrors({...errors, [name]: e.target.validationMessage});
 //     setIsValid(e.target.closest('form').checkValidity());
 //   };
-
 
 
 //   const resetForm = useCallback((newValues = {}, newErrors = {}, newIsValid = false) => {

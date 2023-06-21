@@ -7,6 +7,7 @@ import {api} from "../../utils/MainApi";
 import {useContext} from "react";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 import MessagePopup from "../MessagePopup/MessagePopup";
+import {checkEmail} from "../../hooks/useFormAndValidation";
 
 
 function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
@@ -51,6 +52,9 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
     setPopUpDescription(errorDescription);
   }
 
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+
   function successPopUp() {
     setPopUpSuccess();
     setIsPopupVisible(true);
@@ -60,13 +64,6 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
     setPopUpFailure();
     setIsPopupVisible(true);
   }
-
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
-
-  const checkEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
 
   const handleClosePopup = () => {
     setIsPopupVisible(false); // Close the popup
@@ -134,7 +131,7 @@ function Profile({isLoggedIn, onOpenBurger, handleLogout}) {
       updateState({
         user: {
           name: formValue.name,
-          email: formValue.email
+          email: formValue.email,
         },
       });
       successPopUp();

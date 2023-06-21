@@ -11,9 +11,9 @@ function FormInput({
   linkName,
   handleSubmit,
   handleChange,
-  errors
+  errors,
+  isValid
 }) {
-
   return (
     <section className='forminput'>
       <div className='forminput__zone'>
@@ -47,9 +47,9 @@ function FormInput({
               required
               onChange={handleChange}
             />
+            <span className='forminput__total-error'>{errors.email}
+            </span>
           </label>
-          <span className='forminput__total-error'>{errors.email}
-          </span>
           <label className='forminput__label'>Пароль
             <input
               id='password'
@@ -68,6 +68,7 @@ function FormInput({
           <button
             className='forminput__submit-button app__link'
             type='submit'
+            disabled={!isValid}
           >{buttonName}
           </button>
           <p className='forminput__subtitle'>{question}
