@@ -95,6 +95,7 @@ function App() {
     login(email, password)
       .then((res) => {
         localStorage.setItem("jwt", res.token);
+        updateUserInfo()
         setIsLoggedIn(true);
         navigate('/movies');
       }).catch((e) => {
@@ -172,8 +173,7 @@ function App() {
     });
   }
 
-  // данные пользователя
-  useEffect(() => {
+  function updateUserInfo() {
     api.getUserInfo().then(d => {
       if (d.data) {
         if (d.data.name && d.data.email) {
@@ -185,12 +185,12 @@ function App() {
             isAuthenticated: true,
           });
           setIsLoggedIn(true);
-          return
+          return;
         }
       }
       setIsLoggedIn(false);
     }).catch((e) => {
-      console.log(e)
+      console.log(e);
       if (e === "Ошибка: 401") {
         handleLogout();
       }
@@ -199,6 +199,11 @@ function App() {
       setIsLoggedIn(false);
       console.error("Ошибка авторизации!");
     });
+  }
+
+  // данные пользователя
+  useEffect(() => {
+    updateUserInfo()
   }, []);
 
   useEffect(() => {
