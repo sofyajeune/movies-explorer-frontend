@@ -1,0 +1,41 @@
+.navtab {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navtab__menulink {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #000;
+    margin-right: 30px;
+    width: 76px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
+.navtab__menulink_type_signin {
+    background-color: #3456F3;
+    color: #fff;
+    margin: 0;
+}
+
+.navtab__menulink:last-of-type {
+    margin-right: 0;
+}
+
+.navtab__menulink:first-of-type {
+    margin: 0 30px 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+    .menu {
+        justify-content: flex-end;
+    }
+}

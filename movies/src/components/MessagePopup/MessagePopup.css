@@ -1,0 +1,75 @@
+.message-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.message-popup {
+  position: relative;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  padding: 34px 36px 37px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 430px;
+  margin: 0 auto;
+}
+
+.message-popup__content {
+  position: relative;
+}
+
+.message-popup__title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.message-popup__description {
+  margin-bottom: 0;
+}
+
+.message-popup__close-button {
+  border: medium none;
+  background-image: url(../../images/close.svg);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-size: 2.5vw;
+  background-position: center;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: -35px;
+  right: -35px;
+}
+
+.message-popup__close-button:before,
+.message-popup__close-button:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  background-color: #000;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.message-popup__close-button:before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.message-popup__close-button:after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}

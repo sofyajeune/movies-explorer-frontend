@@ -1,0 +1,37 @@
+.header__burger {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .header__burger {
+        display: flex;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        width: 44px;
+        height: 44px;
+        background-color: transparent;
+        padding: 0;
+        border: none;
+    }
+}
+
+.header__image {
+    width: 100%;
+    height: 90%;
+    margin-bottom: 5px;
+}
+
+@media screen and (max-width: 320px) {
+    .header__image {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .header__burger {
+        width: 33px;
+        height: 33px;
+    }
+}

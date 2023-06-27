@@ -1,0 +1,144 @@
+.project {
+  box-sizing: border-box;
+  padding: 110px 70px;
+  background-color: #FAFAFA;
+}
+
+.project__title {
+  border-bottom: 1px solid #000;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+  margin: 0;
+  padding: 0 0 23px;
+}
+
+.project__about {
+  display: flex;
+  justify-content: space-between;
+  margin: 70px 0 110px;
+  color: #000;
+}
+
+.project__description {
+  margin: 0 40px 0 0;
+}
+
+.project__description:last-of-type {
+  margin: 0;
+}
+
+.project__description-title {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+  margin: 0 0 26px;
+}
+
+.project__description-text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+}
+
+.project__time {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) 4fr;
+  grid-template-rows: 36px 31px;
+}
+
+.project__timeline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+
+.project__timeline_one {
+  background-color: #3456F3;
+  color: #fff;
+}
+
+.project__timeline_four {
+  background-color: #F2F2F2;
+  color: #000;
+}
+
+.project__type {
+  align-items: flex-end;
+  font-weight: 500;
+  color: #a0a0a0;
+}
+
+
+@media screen and (max-width: 769px) {
+  .project {
+    padding: 71px 70px 109px;
+  }
+
+  .project__about {
+    margin: 70px 0 93px;
+  }
+
+  .project__item-description {
+    margin: 0 30px 0 0;
+  }
+
+  .project__item-title {
+    margin: 0 0 16px;
+    font-size: 18px;
+    line-height: 1.22;
+  }
+
+  .project__item-text {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .project__line-time {
+    font-size: 11px;
+    line-height: 1.18;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .project {
+    padding: 70px 18px;
+  }
+
+  .project__about {
+    flex-direction: column;
+    margin: 60px 0;
+  }
+
+  .project__item-description {
+    margin: 0 0 56px;
+  }
+
+  .project__description:first-child {
+    margin-bottom: 56px;
+  }
+
+  .project__item-title {
+    margin: 0 0 16px;
+    font-size: 18px;
+    line-height: 1.22;
+  }
+
+  .project__item-text {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .project__timeline {
+    font-size: 11px;
+    line-height: 1.18;
+  }
+}
